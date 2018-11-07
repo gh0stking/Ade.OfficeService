@@ -3,3 +3,5 @@
 ################################################################################
 
 /.vs
+/Ade.OfficeService/bin/Debug/netstandard2.0
+/Ade.OfficeService/obj
