@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2047
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ade.OfficeService", "Ade.OfficeService\Ade.OfficeService.csproj", "{2AAF01CA-5861-4C2A-97B3-9DDCEDBB5BC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ade.OfficeService", "Ade.OfficeService\Ade.OfficeService.csproj", "{2AAF01CA-5861-4C2A-97B3-9DDCEDBB5BC3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ade.OfficeService.UnitTest", "Ade.OfficeService.UnitTest\Ade.OfficeService.UnitTest.csproj", "{79989D17-0D0B-4218-A105-D5F40DB163C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{2AAF01CA-5861-4C2A-97B3-9DDCEDBB5BC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AAF01CA-5861-4C2A-97B3-9DDCEDBB5BC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2AAF01CA-5861-4C2A-97B3-9DDCEDBB5BC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79989D17-0D0B-4218-A105-D5F40DB163C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79989D17-0D0B-4218-A105-D5F40DB163C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79989D17-0D0B-4218-A105-D5F40DB163C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79989D17-0D0B-4218-A105-D5F40DB163C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
