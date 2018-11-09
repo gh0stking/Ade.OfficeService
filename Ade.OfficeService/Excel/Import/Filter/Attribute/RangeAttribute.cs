@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Ade.OfficeService.Excel
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = true, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
     public class RangeAttribute : BaseFilterAttribute
     {
         public int Min { get; set; }
@@ -15,7 +15,7 @@ namespace Ade.OfficeService.Excel
         {
             this.Min = min;
             this.Max = max;
-            this.ErrorMsg = $"仅允许{min} - {max}的值";
+            this.ErrorMsg = $"超限，仅允许为{min}-{max}";
         }
     }
 }

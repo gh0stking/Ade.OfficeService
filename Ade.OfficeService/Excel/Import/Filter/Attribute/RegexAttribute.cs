@@ -14,16 +14,14 @@ namespace Ade.OfficeService.Excel
         public RegexAttribute(string regex)
         {
             this.Regex = regex;
-            this.ErrorMsg = "校验失败";
+            this.ErrorMsg = "非法";
         }
 
         public RegexAttribute(bool isPredefined, PreDefinedRegexEnum regexEnum)
         {
             if (isPredefined)
             {
-                var result = PredefineRegexFactory.GetPredefineRegex(regexEnum);
-                this.Regex = result.regex;
-                this.ErrorMsg = result.errorMsg;
+                this.Regex = PredefineRegexFactory.GetPredefineRegex(regexEnum);
             }
         }
     }
@@ -41,45 +39,37 @@ namespace Ade.OfficeService.Excel
 
     public static class PredefineRegexFactory
     {
-        public static (string regex,string errorMsg) GetPredefineRegex(PreDefinedRegexEnum regexEnum)
+        public static string GetPredefineRegex(PreDefinedRegexEnum regexEnum)
         {
             string regex = string.Empty;
-            string errorMsg = string.Empty;
             switch (regexEnum)
             {
                 case PreDefinedRegexEnum.车牌号:
                     regex = RegexConstant.CAR_CODE_REGEX;
-                    errorMsg = "不是有效的车牌号";
                     break;
                 case PreDefinedRegexEnum.身份证号:
                     regex = RegexConstant.IDENTITY_NUMBER_REGEX;
-                    errorMsg = "不是有效的身份证号";
                     break;
                 case PreDefinedRegexEnum.性别:
                     regex = RegexConstant.GENDER_REGEX;
-                    errorMsg = "不是有效的性别";
                     break;
                 case PreDefinedRegexEnum.国内手机号:
                     regex = RegexConstant.MOBILE_CHINA_REGEX;
-                    errorMsg = "不是有效的国内手机号";
                     break;
                 case PreDefinedRegexEnum.邮箱:
                     regex = RegexConstant.EMAIL_REGEX;
-                    errorMsg = "不是有效的邮箱";
                     break;
                 case PreDefinedRegexEnum.非空:
                     regex = RegexConstant.NOT_EMPTY_REGEX;
-                    errorMsg = "必填";
                     break;
                 case PreDefinedRegexEnum.网址URL:
                     regex = RegexConstant.URL_REGEX;
-                    errorMsg = "不是有效的URL";
                     break;
                 default:
                     break;
             }
 
-            return (regex, errorMsg);
+            return regex;
         }
     }
 }

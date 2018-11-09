@@ -16,11 +16,26 @@ namespace Ade.OfficeService.Excel
         /// <param name="col"></param>
         /// <param name="typeAttrs"></param>
         /// <returns></returns>
-        public static T GetFilterAttr<T>(this ExcelDataCol col, TypeFilterAttrsFlyWeight typeAttrs)
+        public static T GetFilterAttr<T>(this ExcelDataCol col, TypeFilterInfo typeFilterInfo)
             where T : BaseFilterAttribute
         {
-            return (T)typeAttrs.PropertyFilterAttrs.SingleOrDefault(a => a.ColIndex == col.ColIndex)?.
-                 FilterAttrs?.SingleOrDefault(e => e.GetType() == typeof(T));
+            return (T)typeFilterInfo.PropertyFilterInfos.SingleOrDefault(a => a.ColIndex == col.ColIndex)?.
+            FilterAttrs?.SingleOrDefault(e => e.GetType() == typeof(T));
+        }
+
+
+        /// <summary>
+        /// 获取某单元格的某校验类型集合
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="col"></param>
+        /// <param name="typeFilterInfo"></param>
+        /// <returns></returns>
+        public static List<T> GetFilterAttrs<T>(this ExcelDataCol col, TypeFilterInfo typeFilterInfo)
+           where T : BaseFilterAttribute
+        {
+            return typeFilterInfo.PropertyFilterInfos.SingleOrDefault(a => a.ColIndex == col.ColIndex)?.
+                   FilterAttrs?.Where(e => e.GetType() == typeof(T)).Cast<T>().ToList();
         }
 
         /// <summary>
@@ -35,7 +50,7 @@ namespace Ade.OfficeService.Excel
             if (!isValid)
             {
                 row.IsValid = isValid;
-                row.ErrorMsgs.Add(dataCol, errorMsg);
+                row.ErrorMsg = dataCol.ColName + errorMsg;
             }
         }
 
@@ -122,6 +137,12 @@ namespace Ade.OfficeService.Excel
             return (T)o;
         }
 
+        /// <summary>
+        /// 根据DTO属性获取ExcelCol的值
+        /// </summary>
+        /// <param name="col"></param>
+        /// <param name="prop"></param>
+        /// <returns></returns>
         private static object GetValue(ExcelDataCol col, PropertyInfo prop)
         {
             string cellStringValue = col.ColValue;
@@ -153,7 +174,7 @@ namespace Ade.OfficeService.Excel
                     objValue = cellStringValue;
                     break;
                 default:
-                    throw new NotSupportedException("不支持的数据类型");
+                    throw new NotSupportedException("not supported datatype");
             }
 
             return objValue;

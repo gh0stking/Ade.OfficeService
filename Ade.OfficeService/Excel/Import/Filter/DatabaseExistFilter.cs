@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Ade.OfficeService.Excel
 {
-    [FilterBindOption(typeof(DatabaseExistAttribute))]
+    [FilterBind(typeof(DatabaseExistAttribute))]
     public class DatabaseExistFilter : IFilter
     {
         public List<ExcelDataRow> Filter(List<ExcelDataRow> excelDataRows, FilterContext context)
@@ -16,7 +16,7 @@ namespace Ade.OfficeService.Excel
 
             excelDataRows.Where(r => r.IsValid).ToList().ForEach(r => r.DataCols.ForEach(c =>
             {
-                var attr = c.GetFilterAttr<DatabaseExistAttribute>(context.TypeAttrsFlyWeight);
+                var attr = c.GetFilterAttr<DatabaseExistAttribute>(context.TypeFilterInfo);
                 if (attr != null)
                 {
                     r.SetState(context.DelegateDatabaseFilter(attr.TableName, attr.FieldName), c, attr.ErrorMsg);

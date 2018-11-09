@@ -4,8 +4,7 @@ using System.Text;
 
 namespace Ade.OfficeService.Excel
 {
-    public class BaseFilterAttribute : Attribute
+    public class HeaderDecoratorAttribute
     {
-        public string ErrorMsg { get; set; } = "非法";
     }
 }

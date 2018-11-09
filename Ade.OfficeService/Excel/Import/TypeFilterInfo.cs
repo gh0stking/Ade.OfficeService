@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Ade.OfficeService.Excel
 {
-    public class BaseFilterAttribute : Attribute
+    public class TypeFilterInfo
     {
-        public string ErrorMsg { get; set; } = "非法";
+        public List<PropertyFilterInfo> PropertyFilterInfos { get; set; }
     }
 }

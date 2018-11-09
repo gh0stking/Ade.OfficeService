@@ -12,7 +12,7 @@ namespace Ade.OfficeService.Excel
         /// <summary>
         /// DTO所有校验特性集合
         /// </summary>
-        public TypeFilterAttrsFlyWeight TypeAttrsFlyWeight { get; set; }
+        public TypeFilterInfo TypeFilterInfo { get; set; }
 
 
         /// <summary>

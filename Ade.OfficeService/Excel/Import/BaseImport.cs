@@ -152,7 +152,7 @@ namespace Ade.OfficeService.Excel
             FilterContext context = new FilterContext()
             {
                 DelegateDatabaseFilter = this.delegateDatabaseExist,
-                TypeAttrsFlyWeight = TypeFilterAttrsFlyWeight.CreateInstance(this.GetType(), HeaderRow)
+                TypeFilterInfo = TypeFilterInfoFactory.CreateInstance(this.GetType(), HeaderRow)
             };
 
             rows = andFilter.Filter(rows, context);
@@ -168,14 +168,14 @@ namespace Ade.OfficeService.Excel
         {
             List<IFilter> filters = new List<IFilter>();
             List<BaseFilterAttribute> attrs = new List<BaseFilterAttribute>();
-            TypeFilterAttrsFlyWeight typeAttrsFlyWeight = TypeFilterAttrsFlyWeight.CreateInstance(this.GetType(), HeaderRow);
+           TypeFilterInfo typeFilterInfo = TypeFilterInfoFactory.CreateInstance(this.GetType(), HeaderRow);
 
-            typeAttrsFlyWeight.PropertyFilterAttrs.ForEach(a => a.FilterAttrs.ForEach(f => attrs.Add(f)));
+            typeFilterInfo.PropertyFilterInfos.ForEach(a => a.FilterAttrs.ForEach(f => attrs.Add(f)));
 
             attrs.Distinct(new FilterAttributeComparer()).ToList().ForEach
             (a =>
             {
-                var filter = FilterFlyWeight.CreateInstance(a);
+                var filter = FilterFactory.CreateInstance(a.GetType());
                 if (filter != null)
                 {
                     filters.Add(filter);
@@ -213,7 +213,7 @@ namespace Ade.OfficeService.Excel
             ExcelDataRow dataRow = new ExcelDataRow()
             {
                 IsValid = true,
-                ErrorMsgs = new Dictionary<ExcelDataCol, string>(),
+                ErrorMsg = string.Empty,
                 RowIndex = row.RowNum,
                 DataCols = new List<ExcelDataCol>()
             };

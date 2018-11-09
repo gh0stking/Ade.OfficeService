@@ -5,9 +5,9 @@ using System.Text;
 namespace Ade.OfficeService.Excel
 {
     [AttributeUsage( AttributeTargets.Class,AllowMultiple =false,Inherited =false)]
-    public class FilterBindOptionAttribute : Attribute
+    public class FilterBindAttribute : Attribute
     {
-        public FilterBindOptionAttribute(Type filterAttributeType)
+        public FilterBindAttribute(Type filterAttributeType)
         {
             if (!filterAttributeType.IsSubclassOf(typeof(BaseFilterAttribute)))
             {

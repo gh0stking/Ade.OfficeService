@@ -9,6 +9,6 @@ namespace Ade.OfficeService.Excel
         public int RowIndex { get; set; }
         public List<ExcelDataCol> DataCols { get; set; } = new List<ExcelDataCol>();
         public bool IsValid { get; set; }
-        public Dictionary<ExcelDataCol, string> ErrorMsgs { get; set; } = new Dictionary<ExcelDataCol, string>();
+        public string ErrorMsg { get; set; }
     }
 }

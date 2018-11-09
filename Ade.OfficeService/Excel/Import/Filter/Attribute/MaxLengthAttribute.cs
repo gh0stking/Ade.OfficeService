@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Ade.OfficeService.Excel
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = true, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
     public class MaxLengthAttribute : BaseFilterAttribute
     {
         public MaxLengthAttribute(int maxLength)

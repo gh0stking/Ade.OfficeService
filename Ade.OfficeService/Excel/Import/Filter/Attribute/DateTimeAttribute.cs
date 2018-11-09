@@ -5,12 +5,12 @@ using System.Text;
 
 namespace Ade.OfficeService.Excel
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = true, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
     public class DateTimeAttribute : BaseFilterAttribute
     {
         public DateTimeAttribute()
         {
-            this.ErrorMsg = "不是有效日期";
+            this.ErrorMsg = "非法";
         }
     }
 }

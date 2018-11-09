@@ -7,13 +7,10 @@ using System.Text;
 
 namespace Ade.OfficeService.Excel
 {
-    public class TypeFilterAttrsFlyWeight
+    public static class TypeFilterInfoFactory
     {
-        private TypeFilterAttrsFlyWeight()
-        {
-        }
         private static readonly Hashtable Table = Hashtable.Synchronized(new Hashtable(1024));
-        public static TypeFilterAttrsFlyWeight CreateInstance(Type importDTOType,ExcelHeaderRow excelHeaderRow)
+        public static TypeFilterInfo CreateInstance(Type importDTOType, ExcelHeaderRow excelHeaderRow)
         {
             if (importDTOType == null)
             {
@@ -25,13 +22,13 @@ namespace Ade.OfficeService.Excel
                 throw new ArgumentNullException("excelHeaderRow");
             }
 
-            var key = new TypeFilterAttrsFlyWeightKey { ImportDTOType = importDTOType, ExcelHeaderRow = excelHeaderRow };
+            var key = importDTOType;
             if (Table[key] != null)
             {
-                return (TypeFilterAttrsFlyWeight)Table[key];
+                return (TypeFilterInfo)Table[key];
             }
 
-            TypeFilterAttrsFlyWeight typeAttrsFlyWeight = new TypeFilterAttrsFlyWeight();
+            TypeFilterInfo typeFilterInfo = new TypeFilterInfo() { PropertyFilterInfos = new List<PropertyFilterInfo>() { } };
 
             IEnumerable<PropertyInfo> props = importDTOType.GetProperties().ToList().Where(p => p.IsDefined(typeof(ExcelImportAttribute)));
             props.ToList().ForEach(p =>
@@ -40,22 +37,18 @@ namespace Ade.OfficeService.Excel
                 ExcelCol col = excelHeaderRow.Cells.SingleOrDefault(c => c.ColName == colName);
                 if (col != null)
                 {
-                    typeAttrsFlyWeight.PropertyFilterAttrs.Add(
-                        new PropertyFilterAttrs
+                    typeFilterInfo.PropertyFilterInfos.Add(
+                        new PropertyFilterInfo
                         {
                             ColIndex = col.ColIndex,
-                            PropertyName = p.Name,
                             FilterAttrs = p.GetCustomAttributes<BaseFilterAttribute>()?.ToList()
                         });
                 }
             });
 
-            Table[key] = typeAttrsFlyWeight;
+            Table[key] = typeFilterInfo;
 
-            return typeAttrsFlyWeight;
+            return typeFilterInfo;
         }
-
-        public List<PropertyFilterAttrs> PropertyFilterAttrs { get; set; } = new List<PropertyFilterAttrs>();
-        
     }
 }
