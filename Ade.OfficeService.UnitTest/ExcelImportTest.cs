@@ -44,7 +44,7 @@ namespace Ade.OfficeService.UnitTest
             //Assert.True(!row6.IsValid && row6.ErrorMsgs.Any(e => e.Contains("已存在")));
 
             var row7 = rows[7];
-            Assert.True(!row7.IsValid && row7.ErrorMsg.Contains("车牌号非法"));
+            Assert.True(!row7.IsValid && row7.ErrorMsg.Contains("车牌号必填"));
 
             var row8 = rows[8];
             Assert.True(!row8.IsValid && row8.ErrorMsg.Contains("手机号非法"));

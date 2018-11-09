@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Ade.OfficeService.Excel
 {
-    public class CellStyleFactory
+    public class DecoratorContext
     {
-
+        public TypeDecoratorInfo TypeDecoratorInfo { get; set; }
     }
 }

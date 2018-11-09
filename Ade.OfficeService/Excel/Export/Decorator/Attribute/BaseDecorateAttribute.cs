@@ -1,10 +1,11 @@
-﻿using System;
+﻿using NPOI.SS.UserModel;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Ade.OfficeService.Excel
 {
-    public class BaseDecorateAttribute
+    public class BaseDecorateAttribute : Attribute
     {
     }
 }

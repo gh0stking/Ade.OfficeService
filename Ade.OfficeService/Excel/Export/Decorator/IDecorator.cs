@@ -7,6 +7,6 @@ namespace Ade.OfficeService.Excel
 {
     public interface IDecorator
     {
-        IWorkbook Decorate(IWorkbook workbook);
+        IWorkbook Decorate(IWorkbook workbook, DecoratorContext context);
     }
 }

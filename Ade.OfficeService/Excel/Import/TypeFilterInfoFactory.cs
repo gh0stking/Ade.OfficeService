@@ -10,9 +10,9 @@ namespace Ade.OfficeService.Excel
     public static class TypeFilterInfoFactory
     {
         private static readonly Hashtable Table = Hashtable.Synchronized(new Hashtable(1024));
-        public static TypeFilterInfo CreateInstance(Type importDTOType, ExcelHeaderRow excelHeaderRow)
+        public static TypeFilterInfo CreateInstance(Type importType, ExcelHeaderRow excelHeaderRow)
         {
-            if (importDTOType == null)
+            if (importType == null)
             {
                 throw new ArgumentNullException("importDTOType");
             }
@@ -22,7 +22,7 @@ namespace Ade.OfficeService.Excel
                 throw new ArgumentNullException("excelHeaderRow");
             }
 
-            var key = importDTOType;
+            var key = importType;
             if (Table[key] != null)
             {
                 return (TypeFilterInfo)Table[key];
@@ -30,7 +30,7 @@ namespace Ade.OfficeService.Excel
 
             TypeFilterInfo typeFilterInfo = new TypeFilterInfo() { PropertyFilterInfos = new List<PropertyFilterInfo>() { } };
 
-            IEnumerable<PropertyInfo> props = importDTOType.GetProperties().ToList().Where(p => p.IsDefined(typeof(ExcelImportAttribute)));
+            IEnumerable<PropertyInfo> props = importType.GetProperties().ToList().Where(p => p.IsDefined(typeof(ExcelImportAttribute)));
             props.ToList().ForEach(p =>
             {
                 string colName = p.GetCustomAttribute<ExcelImportAttribute>().ColName;

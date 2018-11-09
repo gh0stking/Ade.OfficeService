@@ -1,14 +1,78 @@
 ﻿using NPOI.SS.UserModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 
 namespace Ade.OfficeService.Excel
 {
-    public static class ExtensionMethods
+    public static class ExcelExtensionMethods
     {
+       /// <summary>
+       /// 从类型所有的装饰特性中，获取某类型的第一个匹配特性
+       /// </summary>
+       /// <typeparam name="T"></typeparam>
+       /// <param name="typeDecoratorInfo"></param>
+       /// <param name="decoratorAttrType"></param>
+       /// <returns></returns>
+        public static T GetDecorateAttr<T>(this TypeDecoratorInfo typeDecoratorInfo)
+            where T : BaseDecorateAttribute
+        {
+            var attr = typeDecoratorInfo.TypeDecoratorAttrs.SingleOrDefault(a => a.GetType() == typeof(T));
+            return attr == null ? null : (T)attr;
+        }
+
+        /// <summary>
+        /// 从类型所有的装饰特性中，获取某类型的所有匹配特性
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="typeDecoratorInfo"></param>
+        /// <param name="decoratorAttrType"></param>
+        /// <returns></returns>
+        public static List<T> GetDecorateAttrs<T>(this TypeDecoratorInfo typeDecoratorInfo)
+          where T : BaseDecorateAttribute
+        {
+            var attrs = typeDecoratorInfo.TypeDecoratorAttrs.Where(a => a.GetType() == typeof(T));
+            return attrs == null ? null : attrs.Cast<T>().ToList();
+        }
+
+        /// <summary>
+        /// 将IWorkbook转换为byte数组
+        /// </summary>
+        /// <param name="workbook"></param>
+        /// <returns></returns>
+        public static byte[] ToBytes(this IWorkbook workbook)
+        {
+            byte[] result;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                workbook.Write(ms);
+                result = ms.ToArray();
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 反射获取导出DTO某个属性的值
+        /// </summary>
+        /// <param name="baseExport"></param>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        public static string GetStringValue(this BaseExcelExport baseExport, string propertyName)
+        {
+            string strVal = string.Empty;
+            var prop = baseExport.GetType().GetProperties().Where(p => p.Name.Equals(propertyName)).SingleOrDefault();
+            if (prop != null)
+            {
+                strVal = prop.GetValue(baseExport).ToString();
+            }
+
+            return strVal;
+        }
+
         /// <summary>
         /// 获取某单元格的某校验特性
         /// </summary>
@@ -86,6 +150,11 @@ namespace Ade.OfficeService.Excel
             return true;
         }
 
+        /// <summary>
+        /// 获取单元格的字符串值
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <returns></returns>
         public static string GetStringValue(this ICell cell)
         {
             try

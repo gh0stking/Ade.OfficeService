@@ -7,7 +7,7 @@ using NPOI.SS.UserModel;
 
 namespace Ade.OfficeService.Excel
 {
-    public abstract class BaseImport
+    public abstract class BaseExcelImport
     {
         private IWorkbook Workbook { get; set; }
         private ISheet Sheet { get; set; }
