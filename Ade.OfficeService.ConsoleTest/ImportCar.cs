@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Ade.OfficeService.UnitTest
+namespace Ade.OfficeService.ConsoleTest
 {
     public class ImportCar : IExcelImport
     {

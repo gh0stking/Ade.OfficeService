@@ -209,7 +209,6 @@ namespace Ade.OfficeService.Word
             {
                 XWPFRun run = listRun[i];
                 runText = run.Text;
-                string placeHolder;
                 foreach (var kvp in oldAndNewStringDict)
                 {
                     if (run.Text == kvp.Key)

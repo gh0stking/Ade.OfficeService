@@ -19,7 +19,13 @@ namespace Ade.OfficeService.Excel
                 var attr = c.GetFilterAttr<DatabaseExistAttribute>(context.TypeFilterInfo);
                 if (attr != null)
                 {
-                    r.SetState(context.DelegateDatabaseFilter(attr.TableName, attr.FieldName), c, attr.ErrorMsg);
+                    r.SetState(context.DelegateDatabaseFilter(
+                        new DatabaseFilterContext()
+                    {
+                        TableName = attr.TableName,
+                        FieldName = attr.FieldName,
+                        Value = c.ColValue
+                    }), c, attr.ErrorMsg);
                 }
             }));
 

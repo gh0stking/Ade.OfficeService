@@ -58,16 +58,16 @@ namespace Ade.OfficeService.Excel
         /// <summary>
         /// 反射获取导出DTO某个属性的值
         /// </summary>
-        /// <param name="baseExport"></param>
+        /// <param name="export"></param>
         /// <param name="propertyName"></param>
         /// <returns></returns>
-        public static string GetStringValue(this BaseExcelExport baseExport, string propertyName)
+        public static string GetStringValue(this IExcelExport export, string propertyName)
         {
             string strVal = string.Empty;
-            var prop = baseExport.GetType().GetProperties().Where(p => p.Name.Equals(propertyName)).SingleOrDefault();
+            var prop = export.GetType().GetProperties().Where(p => p.Name.Equals(propertyName)).SingleOrDefault();
             if (prop != null)
             {
-                strVal = prop.GetValue(baseExport).ToString();
+                strVal = prop.GetValue(export).ToString();
             }
 
             return strVal;
@@ -198,55 +198,12 @@ namespace Ade.OfficeService.Excel
 
                     if (col != null)
                     {
-                        p.SetValue(o, GetValue(col, p));
+                        p.SetValue(o, ExpressionMapper.ChangeType(col.ColValue, p.PropertyType));
                     }
                 }
             });
 
             return (T)o;
-        }
-
-        /// <summary>
-        /// 根据DTO属性获取ExcelCol的值
-        /// </summary>
-        /// <param name="col"></param>
-        /// <param name="prop"></param>
-        /// <returns></returns>
-        private static object GetValue(ExcelDataCol col, PropertyInfo prop)
-        {
-            string cellStringValue = col.ColValue;
-
-            object objValue;
-
-            //是否枚举类型
-            if (prop.PropertyType.IsSubclassOf(typeof(Enum)))
-            {
-                return Enum.Parse(prop.PropertyType, string.IsNullOrWhiteSpace(cellStringValue) ? "0" : cellStringValue);
-            }
-
-            switch (prop.PropertyType.Name)
-            {
-                case "DateTime":
-                    objValue = string.IsNullOrWhiteSpace(cellStringValue) ? DateTime.MinValue : DateTime.Parse(cellStringValue);
-                    break;
-                case "Int32":
-                    objValue = string.IsNullOrWhiteSpace(cellStringValue) ? 0 : int.Parse(cellStringValue);
-                    break;
-                case "Int64":
-                    objValue = string.IsNullOrWhiteSpace(cellStringValue) ? 0 : long.Parse(cellStringValue);
-                    break;
-                case "Boolean":
-                    string[] strs = new string[] { "true", "是" };
-                    objValue = strs.ToList().Contains(cellStringValue);
-                    break;
-                case "String":
-                    objValue = cellStringValue;
-                    break;
-                default:
-                    throw new NotSupportedException("not supported datatype");
-            }
-
-            return objValue;
         }
     }
 }

@@ -1,61 +1,56 @@
 ﻿using NPOI.HSSF.UserModel;
-using NPOI.HSSF.Util;
 using NPOI.SS.UserModel;
-using NPOI.SS.Util;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
+using System.Text;
 
 namespace Ade.OfficeService.Excel
 {
-    public class BaseExcelExport
+    public static class ExcelExportService<T>
+        where T: IExcelExport
     {
-        private IWorkbook Workbook { get; set; }
-        private ISheet Sheet { get; set; }
-
-        internal void Init()
-        {
-            Workbook = new HSSFWorkbook();
-            Sheet = Workbook.CreateSheet();
-        }
-
-        public IWorkbook Export(List<BaseExcelExport> baseExportDtos)
+        public static IWorkbook Export(List<T> exportDtos)
         {
             Init();
 
             ExcelSetHeader();
 
-            ExcelSetDataRow(baseExportDtos);
+            ExcelSetDataRow(exportDtos);
 
             Decorate();
 
-            return this.Workbook;
+            return Workbook;
         }
-
-        protected void Decorate()
+        private static IWorkbook Workbook { get; set; }
+        private static ISheet Sheet { get; set; }
+        private static void Init()
+        {
+            Workbook = new HSSFWorkbook();
+            Sheet = Workbook.CreateSheet();
+        }
+        private static void Decorate()
         {
             DecoratorContext context = new DecoratorContext()
             {
-                TypeDecoratorInfo = TypeDecoratorInfoFactory.CreateInstance(this.GetType())
+                TypeDecoratorInfo = TypeDecoratorInfoFactory.CreateInstance(typeof(T))
             };
 
             GetDecorators().ForEach(d =>
             {
-                this.Workbook = d.Decorate(this.Workbook, context);
+                Workbook = d.Decorate(Workbook, context);
             });
         }
-
         /// <summary>
         /// 获取所有的装饰器
         /// </summary>
         /// <returns></returns>
-        private List<IDecorator> GetDecorators()
+        private static List<IDecorator> GetDecorators()
+
         {
             List<IDecorator> decorators = new List<IDecorator>();
             List<BaseDecorateAttribute> attrs = new List<BaseDecorateAttribute>();
-            TypeDecoratorInfo typeDecoratorInfo = TypeDecoratorInfoFactory.CreateInstance(this.GetType());
+            TypeDecoratorInfo typeDecoratorInfo = TypeDecoratorInfoFactory.CreateInstance(typeof(T));
 
             attrs.AddRange(typeDecoratorInfo.TypeDecoratorAttrs);
             typeDecoratorInfo.PropertyDecoratorInfos.ForEach(a => attrs.AddRange(a.DecoratorAttrs));
@@ -72,27 +67,25 @@ namespace Ade.OfficeService.Excel
 
             return decorators;
         }
-
         /// <summary>
         /// 设置表头
         /// </summary>
-        protected virtual void ExcelSetHeader()
+        private static void ExcelSetHeader()
         {
             IRow row = Sheet.CreateRow(0);
             int colIndex = 0;
-            var dict = ExportMappingDictFactory.CreateInstance(this.GetType());
+            var dict = ExportMappingDictFactory.CreateInstance(typeof(T));
             foreach (var kvp in dict)
             {
                 row.CreateCell(colIndex).SetCellValue(kvp.Value);
                 colIndex++;
             }
         }
-
         /// <summary>
         /// 设置数据
         /// </summary>
         /// <param name="lst"></param>
-        protected virtual void ExcelSetDataRow(List<BaseExcelExport> lst)
+        private static void ExcelSetDataRow(List<T> lst)
         {
             if (lst.Count <= 0)
             {
@@ -101,9 +94,9 @@ namespace Ade.OfficeService.Excel
 
             IRow row;
             int colIndex;
-            BaseExcelExport dto;
+            IExcelExport dto;
 
-            var dict = ExportMappingDictFactory.CreateInstance(this.GetType());
+            var dict = ExportMappingDictFactory.CreateInstance(typeof(T));
 
             for (int i = 0; i < lst.Count; i++)
             {

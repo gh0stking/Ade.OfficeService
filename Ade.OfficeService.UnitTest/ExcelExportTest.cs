@@ -28,7 +28,7 @@ namespace Ade.OfficeService.UnitTest
                 });
             }
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 60000; i++)
             {
                 list.Add(new ExportCar()
                 {
@@ -40,7 +40,7 @@ namespace Ade.OfficeService.UnitTest
                 });
             }
 
-            IWorkbook wk = list[0].Export(list.Cast<BaseExcelExport>().ToList());
+            IWorkbook wk = ExcelExportService<ExportCar>.Export(list);
             Assert.True(wk != null);
 
 

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Ade.OfficeService.UnitTest
+namespace Ade.OfficeService.ConsoleTest
 {
     [WrapText]
     [Header(Color =ColorEnum.RED,FontName ="微软雅黑",FontSize =12,IsBold =true)]

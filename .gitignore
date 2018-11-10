@@ -7,3 +7,10 @@
 /Ade.OfficeService/obj
 /Ade.OfficeService.UnitTest/bin/Debug/netcoreapp2.1
 /Ade.OfficeService.UnitTest/obj
+/Ade.OfficeService.UnitTest/bin/Release/netcoreapp2.1
+/TestResults/48b7ab99-cd7e-40ab-ad4d-3c7ec5a96b4a
+/Ade.OfficeService.ConsoleTest/obj/Release/netcoreapp2.1
+/Ade.OfficeService.ConsoleTest/obj
+/Ade.OfficeService.ConsoleTest/bin/Release/netcoreapp2.1
+/Ade.OfficeService/bin/Release/netstandard2.0
+/Ade.OfficeService.ConsoleTest/bin/Debug/netcoreapp2.1
