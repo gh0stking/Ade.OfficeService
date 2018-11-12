@@ -25,6 +25,15 @@ namespace Ade.OfficeService.Excel
         /// <returns></returns>
         public static T FastConvert<T>(ExcelDataRow dataRow)
         {
+            //利用表达式树，动态生成委托并缓存，得到接近于硬编码的性能
+            //最终生成的代码近似于(假设T为Person类)
+            //Func<ExcelDataRow,Person>
+            //      new Person(){
+            //          Name = Convert(ChangeType(dataRow.DataCols.SingleOrDefault(c=>c.PropertyName == prop.Name).ColValue,prop.PropertyType),prop.ProertyType),
+            //          Age = Convert(ChangeType(dataRow.DataCols.SingleOrDefault(c=>c.PropertyName == prop.Name).ColValue,prop.PropertyType),prop.ProertyType)
+            //      }
+            // }
+
             string propertyNames = string.Empty;
             dataRow.DataCols.ForEach(c => propertyNames += c.PropertyName + "_");
             var key = typeof(T).FullName + "_" + propertyNames.Trim('_');
