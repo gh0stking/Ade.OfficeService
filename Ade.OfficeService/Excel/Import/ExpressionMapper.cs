@@ -84,7 +84,7 @@ namespace Ade.OfficeService.Excel
 
         public static object ChangeType(string stringValue, Type type)
         {
-            object obj = type.IsValueType;
+            object obj = null;
 
             Type nullableType = Nullable.GetUnderlyingType(type);
             if (nullableType != null)
