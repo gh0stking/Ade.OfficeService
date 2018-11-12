@@ -77,7 +77,7 @@ namespace Ade.OfficeService.Excel
         /// 校验
         /// </summary>
         /// <returns></returns>
-        public static List<ExcelDataRow> Import(string fileUrl, Func<DatabaseFilterContext, bool> func = null)
+        public static List<ExcelDataRow> Import(string fileUrl, Func<DatabaseFilterContext, bool> delegateNotExistInDatabase = null)
         {
             Init(fileUrl);
 
@@ -86,7 +86,7 @@ namespace Ade.OfficeService.Excel
 
             FilterContext context = new FilterContext()
             {
-                DelegateDatabaseFilter = func,
+                DelegateNotExistInDatabase = delegateNotExistInDatabase,
                 TypeFilterInfo = TypeFilterInfoFactory.CreateInstance(typeof(T), HeaderRow)
             };
 

@@ -28,7 +28,7 @@ namespace Ade.OfficeService.UnitTest
                 });
             }
 
-            for (int i = 0; i < 60000; i++)
+            for (int i = 0; i < 600; i++)
             {
                 list.Add(new ExportCar()
                 {

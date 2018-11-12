@@ -9,7 +9,7 @@ namespace Ade.OfficeService.Excel
     {
         public List<ExcelDataRow> Filter(List<ExcelDataRow> excelDataRows, FilterContext context)
         {
-            if (context.DelegateDatabaseFilter == null)
+            if (context.DelegateNotExistInDatabase == null)
             {
                 throw new ArgumentNullException("please set delegate of database filter first");
             }
@@ -19,7 +19,7 @@ namespace Ade.OfficeService.Excel
                 var attr = c.GetFilterAttr<DatabaseExistAttribute>(context.TypeFilterInfo);
                 if (attr != null)
                 {
-                    r.SetState(context.DelegateDatabaseFilter(
+                    r.SetState(context.DelegateNotExistInDatabase(
                         new DatabaseFilterContext()
                     {
                         TableName = attr.TableName,

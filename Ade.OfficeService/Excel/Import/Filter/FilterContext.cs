@@ -18,6 +18,6 @@ namespace Ade.OfficeService.Excel
         /// <summary>
         /// 数据库校验委托(参数为表名，字段名)
         /// </summary>
-        public Func<DatabaseFilterContext, bool> DelegateDatabaseFilter { get; set; }
+        public Func<DatabaseFilterContext, bool> DelegateNotExistInDatabase { get; set; }
     }
 }
