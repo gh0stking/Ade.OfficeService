@@ -13,7 +13,7 @@ namespace Ade.OfficeService.Word
         /// </summary>
         /// <param name="contentRootPath"></param>
         /// <returns></returns>
-        public static XWPFDocument GetRenderedWord<T>(string templateUrl, T wordData)
+        public static XWPFDocument ExportFromTemplate<T>(string templateUrl, T wordData)
             where T:IWordExport
         {
             XWPFDocument word = GetTemplateWord(templateUrl, wordData);
