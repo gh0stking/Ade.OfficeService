@@ -32,12 +32,6 @@ namespace Ade.OfficeService.Excel
 
             if (!Table.ContainsKey(key))
             {
-                var dataCols = dataRow.DataCols;
-
-                var dataColsExpr = Expression.Parameter(typeof(List<ExcelDataCol>));
-
-                Expression.Assign(dataColsExpr, Expression.Constant(dataCols));
-
                 List<MemberBinding> memberBindingList = new List<MemberBinding>();
 
                 MethodInfo singleOrDefaultMethod = typeof(Enumerable)
@@ -48,14 +42,6 @@ namespace Ade.OfficeService.Excel
                 foreach (var prop in typeof(T).GetProperties())
                 {
                     Expression<Func<ExcelDataCol, bool>> lambdaExpr = c => c.PropertyName == prop.Name;
-
-                    MethodCallExpression singleOrDefaultExpr = Expression.Call(
-                        singleOrDefaultMethod
-                        , dataColsExpr
-                        , lambdaExpr);
-
-                    var colValueExpr = Expression.Parameter(typeof(string));
-                    Expression.Assign(colValueExpr, Expression.Property(singleOrDefaultExpr, "ColValue"));
 
                     MethodInfo changeTypeMethod = typeof(ExpressionMapper).GetMethods().Where(m => m.Name == "ChangeType").First();
 
