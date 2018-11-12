@@ -26,7 +26,7 @@ namespace Ade.OfficeService.Excel
         public static TOut Trans<TOut>(ExcelDataRow dataRow)
         {
             string key = string.Format("funckey_{0}_{1}", typeof(ExcelDataRow).FullName, typeof(TOut).FullName);
-            if (!Table.ContainsKey(key))
+            //if (!Table.ContainsKey(key))
             {
                 ParameterExpression parameterExpression = Expression.Parameter(typeof(ExcelDataRow), "p");
                 List<MemberBinding> memberBindingList = new List<MemberBinding>();

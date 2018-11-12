@@ -9,13 +9,13 @@ namespace Ade.OfficeService.ConsoleTest
     {
         [ExcelImport("车牌号")]
         [Regex(RegexEnum.非空,ErrorMsg ="必填")]
-        [DatabaseExist("cartable","carcode")]
+        //[DatabaseExist("cartable","carcode")]
         [Regex(RegexEnum.车牌号)]
         //[Duplication]
         public string CarCode { get; set; }
 
         [ExcelImport("手机号")]
-        [Regex(RegexEnum.国内手机号)]
+        //[Regex(RegexEnum.国内手机号)]
         public string Mobile { get; set; }
 
         [ExcelImport("身份证号")]
@@ -41,6 +41,7 @@ namespace Ade.OfficeService.ConsoleTest
 
     public enum GenderEnum
     {
+        默认 = 0,
         男 = 10,
         女 = 20
     }

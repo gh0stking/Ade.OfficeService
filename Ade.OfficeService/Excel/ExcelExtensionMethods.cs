@@ -182,12 +182,38 @@ namespace Ade.OfficeService.Excel
         }
 
         /// <summary>
-        /// 将ExcelDataRow转换为指定类型
+        /// 直接反射
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="row"></param>
         /// <returns></returns>
         public static T Convert<T>(this ExcelDataRow row)
+        {
+            return Convert<T>(row, GetValue);
+        }
+
+        /// <summary>
+        /// 将ExcelDataRow转换为指定类型
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="row"></param>
+        /// <returns></returns>
+        private static T Convert<T>(this ExcelDataRow row,Func<ExcelDataRow,Type,string,object> func)
+        {
+            Type t = typeof(T);
+            object o = Activator.CreateInstance(t);
+            t.GetProperties().ToList().ForEach(p =>
+            {
+                if (p.IsDefined(typeof(ExcelImportAttribute)))
+                {
+                    p.SetValue(o, func(row,p.PropertyType,p.GetCustomAttribute<ExcelImportAttribute>().ColName));
+                }
+            });
+
+            return (T)o;
+        }
+
+        public static T ConvertDirect<T>(this ExcelDataRow row)
         {
             Type t = typeof(T);
             object o = Activator.CreateInstance(t);
@@ -204,6 +230,17 @@ namespace Ade.OfficeService.Excel
             });
 
             return (T)o;
+        }
+
+        private static object GetValue(ExcelDataRow row,Type propType ,string colName)
+        {
+            string val = row.DataCols.SingleOrDefault(c => c.ColName == colName)?.ColValue;
+            if (!string.IsNullOrWhiteSpace(val))
+            {
+                return ExpressionMapper.ChangeType(val, propType);
+            }
+
+            return val;
         }
     }
 }
