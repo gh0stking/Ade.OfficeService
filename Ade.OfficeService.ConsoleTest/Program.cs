@@ -28,7 +28,7 @@ namespace Ade.OfficeService.ConsoleTest
             Stopwatch sw = new Stopwatch();
 
             sw.Start();
-            var rows = ExcelImportService<ImportCar>.Import(fileUrl, DBExist);
+            var rows = ExcelImportService.Import<ImportCar>(fileUrl, DBExist);
             sw.Stop();
 
             Console.WriteLine($"Exel读取以及校验耗时：{sw.ElapsedMilliseconds}");
