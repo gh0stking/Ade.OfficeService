@@ -76,7 +76,7 @@ namespace Ade.OfficeService.ConsoleTest
             sw.Stop();
             Console.WriteLine($"硬编码转换耗时：{sw.ElapsedMilliseconds}");
 
-            //Console.WriteLine("---------------------------------------------------------");
+            Console.WriteLine("\r\n");
         }
 
         public static ImportCar HardCode(ExcelDataRow row)
