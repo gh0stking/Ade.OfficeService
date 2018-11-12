@@ -7,7 +7,7 @@ using System.Linq;
 namespace Ade.OfficeService.Excel
 {
     [BindDecorator(typeof(HeaderAttribute))]
-    public class HeaderDecorator : IDecorator
+    internal class HeaderDecorator : IDecorator
     {
         public IWorkbook Decorate(IWorkbook workbook, DecoratorContext context)
         {

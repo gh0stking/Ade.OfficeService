@@ -8,7 +8,7 @@ using NPOI.SS.Util;
 namespace Ade.OfficeService.Excel
 {
     [BindDecorator(typeof(MergeColsAttribute))]
-    public class MergeColsDecorator : IDecorator
+    internal class MergeColsDecorator : IDecorator
     {
         public IWorkbook Decorate(IWorkbook workbook, DecoratorContext context)
         {

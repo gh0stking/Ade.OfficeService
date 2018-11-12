@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Ade.OfficeService.Excel
 {
-    public static class FilterFactory
+    internal static class FilterFactory
     {
         private static readonly Hashtable Table = Hashtable.Synchronized(new Hashtable(1024));
         public static IFilter CreateInstance(Type attrType)

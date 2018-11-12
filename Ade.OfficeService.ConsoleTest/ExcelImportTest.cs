@@ -24,9 +24,8 @@ namespace Ade.OfficeService.ConsoleTest
                 //list.Add(item.Convert<ImportCar>());
 
                 //Expression + »º´æ×ª»» - 5000Ìõ3.5Ãë
-                list.Add(ExpressionMapper.Trans<ImportCar>(item));
+                list.Add(ExpressionMapper.FastConvert<ImportCar>(item));
             }
-
         }
 
         public static bool DBExist(DatabaseFilterContext context)

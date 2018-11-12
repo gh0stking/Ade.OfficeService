@@ -11,14 +11,16 @@ namespace Ade.OfficeService.ConsoleTest
     {
         static void Main(string[] args)
         {
+            int time = 1;
             while (true)
             {
-                Test();
+                Test(time);
                 Console.ReadKey();
+                time++;
             }
         }
 
-        private static void Test()
+        private static void Test(int time)
         {
 
             string curDir = Environment.CurrentDirectory;
@@ -29,6 +31,9 @@ namespace Ade.OfficeService.ConsoleTest
 
             sw.Start();
             var rows = ExcelImportService.Import<ImportCar>(fileUrl, DBExist);
+
+            Console.WriteLine($"------------第{time}次导入，处理{rows.Where(e=>e.IsValid).Count()}条数据------------");
+
             sw.Stop();
 
             Console.WriteLine($"Exel读取以及校验耗时：{sw.ElapsedMilliseconds}");
@@ -38,11 +43,11 @@ namespace Ade.OfficeService.ConsoleTest
             sw.Restart();
             foreach (var item in rows.Where(e => e.IsValid))
             {
-                //Expression + 缓存转换 - 5000条3.5秒
-                list.Add(HardCode(item));
+                //反射转换 - 5000条 6秒
+                item.ConvertDirect<ImportCar>();
             }
             sw.Stop();
-            Console.WriteLine($"硬编码转换耗时：{sw.ElapsedMilliseconds}");
+            Console.WriteLine($"直接反射转换耗时：{sw.ElapsedMilliseconds}");
 
             sw.Restart();
             foreach (var item in rows.Where(e=>e.IsValid))
@@ -54,25 +59,24 @@ namespace Ade.OfficeService.ConsoleTest
             Console.WriteLine($"反射+委托转换耗时：{sw.ElapsedMilliseconds}");
 
             sw.Restart();
-            foreach (var item in rows.Where(e => e.IsValid))
-            {
-                //反射转换 - 5000条 6秒
-                item.ConvertDirect<ImportCar>();
-            }
-            sw.Stop();
-            Console.WriteLine($"直接反射转换耗时：{sw.ElapsedMilliseconds}");
-
-
-            sw.Restart();
             foreach (var item in rows.Where(e=>e.IsValid))
             {
                 //Expression + 缓存转换 - 5000条3.5秒
-                list.Add(ExpressionMapper.Trans<ImportCar>(item));
+                list.Add(ExpressionMapper.FastConvert<ImportCar>(item));
             }
             sw.Stop();
-            Console.WriteLine($"Expression转换耗时(无缓存)：{sw.ElapsedMilliseconds}");
+            Console.WriteLine($"表达式树转换耗时：{sw.ElapsedMilliseconds}");
+        
+            sw.Restart();
+            foreach (var item in rows.Where(e => e.IsValid))
+            {
+                //Expression + 缓存转换 - 5000条3.5秒
+                list.Add(HardCode(item));
+            }
+            sw.Stop();
+            Console.WriteLine($"硬编码转换耗时：{sw.ElapsedMilliseconds}");
 
-            Console.WriteLine("---------------------------------------------------------");
+            //Console.WriteLine("---------------------------------------------------------");
         }
 
         public static ImportCar HardCode(ExcelDataRow row)

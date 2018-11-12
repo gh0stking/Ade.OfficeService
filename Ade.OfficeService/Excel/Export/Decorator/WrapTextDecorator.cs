@@ -7,7 +7,7 @@ using System.Linq;
 namespace Ade.OfficeService.Excel
 {
     [BindDecorator(typeof(WrapTextAttribute))]
-    public class WrapTextDecorator : IDecorator
+    internal class WrapTextDecorator : IDecorator
     {
         public IWorkbook Decorate(IWorkbook workbook, DecoratorContext context)
         {
