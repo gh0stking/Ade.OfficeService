@@ -17,14 +17,14 @@ namespace Ade.OfficeService.Word
         /// <param name="doc">word</param>
         /// <param name="placeHolderAndValueDict">占位符：值 字典</param>
         /// <param name="hook">钩子委托</param>
-        public static void ReplacePlaceHolderInWord(XWPFDocument doc, Dictionary<string, string> placeHolderAndValueDict, List<AddPictureOptions> listAddPictureOptions, List<string> listAllPlaceHolder, Action<XWPFRun> hook)
+        public static void ReplacePlaceHolderInWord(XWPFDocument doc, Dictionary<string, string> placeHolderAndValueDict, List<AddPictureOptions> listAddPictureOptions, List<string> listAllPlaceHolder)
         {
             IEnumerator<XWPFParagraph> paragraphEnumerator = doc.GetParagraphsEnumerator();
             XWPFParagraph paragraph;
             while (paragraphEnumerator.MoveNext())
             {
                 paragraph = paragraphEnumerator.Current;
-                ReplacePlaceHolderInParagraph(paragraph, placeHolderAndValueDict, hook);
+                ReplacePlaceHolderInParagraph(paragraph, placeHolderAndValueDict);
                 AddPicture(paragraph, listAddPictureOptions);
             }
 
@@ -33,7 +33,7 @@ namespace Ade.OfficeService.Word
             while (tableEnumerator.MoveNext())
             {
                 table = tableEnumerator.Current;
-                ReplacePlaceHolderInTable(table, placeHolderAndValueDict, hook);
+                ReplacePlaceHolderInTable(table, placeHolderAndValueDict);
                 AddPictureInTable(table, listAddPictureOptions);
             }
 
@@ -58,7 +58,7 @@ namespace Ade.OfficeService.Word
             while (paragraphEnumerator.MoveNext())
             {
                 paragraph = paragraphEnumerator.Current;
-                ReplacePlaceHolderInParagraph(paragraph, placeHolderAndValueDict, null);
+                ReplacePlaceHolderInParagraph(paragraph, placeHolderAndValueDict);
             }
 
             IEnumerator<XWPFTable> tableEnumerator = doc.GetTablesEnumerator();
@@ -66,7 +66,7 @@ namespace Ade.OfficeService.Word
             while (tableEnumerator.MoveNext())
             {
                 table = tableEnumerator.Current;
-                ReplacePlaceHolderInTable(table, placeHolderAndValueDict, null);
+                ReplacePlaceHolderInTable(table, placeHolderAndValueDict);
             }
         }
 
@@ -176,7 +176,7 @@ namespace Ade.OfficeService.Word
         /// <param name="placeHolder"></param>
         /// <param name="replaceText"></param>
         /// <param name="setRunStyleDelegate"></param>
-        private static void ReplacePlaceHolderInTable(XWPFTable table, Dictionary<string, string> oldAndNewStringDict, Action<XWPFRun> hook)
+        private static void ReplacePlaceHolderInTable(XWPFTable table, Dictionary<string, string> oldAndNewStringDict)
         {
             foreach (XWPFTableRow row in table.Rows)
             {
@@ -186,7 +186,7 @@ namespace Ade.OfficeService.Word
                     for (int i = 0; i < cell.Paragraphs.Count; i++)
                     {
                         paragraph = cell.Paragraphs[i];
-                        ReplacePlaceHolderInParagraph(paragraph, oldAndNewStringDict, hook);
+                        ReplacePlaceHolderInParagraph(paragraph, oldAndNewStringDict);
                     }
                 }
             }
@@ -199,7 +199,7 @@ namespace Ade.OfficeService.Word
         /// <param name="placeHolder">占位符(不要包含特殊字符，建议全英文)</param>
         /// <param name="replaceText">替换后字符</param>
         /// <param name="setRunStyle">设置新文本格式</param>
-        private static void ReplacePlaceHolderInParagraph(XWPFParagraph paragraph, Dictionary<string, string> oldAndNewStringDict, Action<XWPFRun> hook)
+        private static void ReplacePlaceHolderInParagraph(XWPFParagraph paragraph, Dictionary<string, string> oldAndNewStringDict)
         {
             string runText, newRunText;
             XWPFRun newRun;
@@ -237,11 +237,6 @@ namespace Ade.OfficeService.Word
                         if (newRun.FontSize <= 0)
                         {
                             newRun.FontSize = 10;
-                        }
-
-                        if (hook != null)
-                        {
-                            hook.Invoke(newRun);
                         }
                     }
                 }

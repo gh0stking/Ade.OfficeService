@@ -8,8 +8,7 @@ using NPOI.SS.UserModel;
 
 namespace Ade.OfficeService.Excel
 {
-    public static class ExcelImportService<T>
-        where T:IExcelImport
+    public static class ExcelImportService
     {
         private static IWorkbook Workbook { get; set; }
         private static ISheet Sheet { get; set; }
@@ -77,7 +76,8 @@ namespace Ade.OfficeService.Excel
         /// 校验
         /// </summary>
         /// <returns></returns>
-        public static List<ExcelDataRow> Import(string fileUrl, Func<DatabaseFilterContext, bool> delegateNotExistInDatabase = null)
+        public static List<ExcelDataRow> Import<T>(string fileUrl, Func<DatabaseFilterContext, bool> delegateNotExistInDatabase = null)
+            where T:IExcelImport
         {
             Init(fileUrl);
 

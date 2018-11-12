@@ -40,7 +40,7 @@ namespace Ade.OfficeService.UnitTest
                 });
             }
 
-            IWorkbook wk = ExcelExportService<ExportCar>.Export(list);
+            IWorkbook wk = ExcelExportService.Export<ExportCar>(list);
             Assert.True(wk != null);
 
 

@@ -7,18 +7,18 @@ using System.Text;
 
 namespace Ade.OfficeService.Excel
 {
-    public static class ExcelExportService<T>
-        where T: IExcelExport
+    public static class ExcelExportService
     {
-        public static IWorkbook Export(List<T> exportDtos)
+        public static IWorkbook Export<T>(List<T> exportDtos)
+            where T:IExcelExport
         {
             Init();
 
-            ExcelSetHeader();
+            ExcelSetHeader<T>();
 
             ExcelSetDataRow(exportDtos);
 
-            Decorate();
+            Decorate<T>();
 
             return Workbook;
         }
@@ -29,14 +29,15 @@ namespace Ade.OfficeService.Excel
             Workbook = new HSSFWorkbook();
             Sheet = Workbook.CreateSheet();
         }
-        private static void Decorate()
+        private static void Decorate<T>()
+            where T:IExcelExport
         {
             DecoratorContext context = new DecoratorContext()
             {
                 TypeDecoratorInfo = TypeDecoratorInfoFactory.CreateInstance(typeof(T))
             };
 
-            GetDecorators().ForEach(d =>
+            GetDecorators<T>().ForEach(d =>
             {
                 Workbook = d.Decorate(Workbook, context);
             });
@@ -45,7 +46,8 @@ namespace Ade.OfficeService.Excel
         /// 获取所有的装饰器
         /// </summary>
         /// <returns></returns>
-        private static List<IDecorator> GetDecorators()
+        private static List<IDecorator> GetDecorators<T>()
+            where T:IExcelExport
 
         {
             List<IDecorator> decorators = new List<IDecorator>();
@@ -70,7 +72,8 @@ namespace Ade.OfficeService.Excel
         /// <summary>
         /// 设置表头
         /// </summary>
-        private static void ExcelSetHeader()
+        private static void ExcelSetHeader<T>()
+            where T:IExcelExport
         {
             IRow row = Sheet.CreateRow(0);
             int colIndex = 0;
@@ -85,7 +88,8 @@ namespace Ade.OfficeService.Excel
         /// 设置数据
         /// </summary>
         /// <param name="lst"></param>
-        private static void ExcelSetDataRow(List<T> lst)
+        private static void ExcelSetDataRow<T>(List<T> lst)
+            where T:IExcelExport
         {
             if (lst.Count <= 0)
             {

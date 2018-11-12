@@ -19,7 +19,7 @@ namespace Ade.OfficeService.UnitTest
 
             //ImportCar carImportDTO = new ImportCar();
             //carImportDTO.SetDelegateDatabaseExist(DBExist);
-            var rows = ExcelImportService<ImportCar>.Import(fileUrl, DBExist);
+            var rows = ExcelImportService.Import<ImportCar>(fileUrl, DBExist);
 
             Assert.True(rows.Count > 0);
            
@@ -61,10 +61,10 @@ namespace Ade.OfficeService.UnitTest
             foreach (var item in rows.Where(e => e.IsValid))
             {
                 //反射转换 - 5000条 6秒
-                //list.Add(item.Convert<ImportCar>());
+                list.Add(item.Convert<ImportCar>());
 
                 //Expression + 缓存转换 - 5000条3.5秒
-                list.Add(ExpressionMapper.Trans<ImportCar>(item));
+                //list.Add(ExpressionMapper.Trans<ImportCar>(item));
             }
 
             //Parallel.ForEach(rows.Where(e => e.IsValid), new ParallelOptions() { MaxDegreeOfParallelism = 5 }, (item, state) =>

@@ -6,20 +6,19 @@ using System.Reflection;
 
 namespace Ade.OfficeService.Word
 {
-    public class BaseWordDto
+    public static class WordExportService
     {
         /// <summary>
         /// 获取渲染后的Word
         /// </summary>
         /// <param name="contentRootPath"></param>
         /// <returns></returns>
-        public XWPFDocument GetRenderedWord(string templateUrl)
+        public static XWPFDocument GetRenderedWord<T>(string templateUrl, T wordData)
+            where T:IWordExport
         {
-            XWPFDocument word = GetTemplateWord(templateUrl);
+            XWPFDocument word = GetTemplateWord(templateUrl, wordData);
 
-            Render(word);
-
-            CustomOperation(word);
+            Render(word, wordData);
 
             return word;
         }
@@ -27,7 +26,7 @@ namespace Ade.OfficeService.Word
         /// <summary>
         /// 图片Id
         /// </summary>
-        protected uint PicId
+        private static uint PicId
         {
             get
             {
@@ -36,24 +35,18 @@ namespace Ade.OfficeService.Word
             }
         }
 
-        private uint picId = 0;
+        private static uint picId = 0;
 
-        /// <summary>
-        /// 子类在渲染模板之后的自定义操作
-        /// </summary>
-        /// <param name="word"></param>
-        protected virtual void CustomOperation(XWPFDocument word)
-        {
-        }
 
         /// <summary>
         /// 获取插入图片配置信息
         /// </summary>
         /// <returns></returns>
-        protected virtual List<AddPictureOptions> GetAddPictureOptionsList()
+        private static List<AddPictureOptions> GetAddPictureOptionsList<T>(T wordData)
+            where T:IWordExport
         {
             List<AddPictureOptions> listAddPictureOptions = new List<AddPictureOptions>();
-            Type type = this.GetType();
+            Type type = typeof(T);
             PropertyInfo[] props = type.GetProperties();
 
             List<string> listPictureUrl;
@@ -64,7 +57,7 @@ namespace Ade.OfficeService.Word
                 {
                     try
                     {
-                        listPictureUrl = (List<string>)prop.GetValue(this);
+                        listPictureUrl = (List<string>)prop.GetValue(wordData);
                     }
                     catch (Exception)
                     {
@@ -92,23 +85,16 @@ namespace Ade.OfficeService.Word
         }
 
         /// <summary>
-        /// 替换占位符钩子
-        /// </summary>
-        /// <param name="run"></param>
-        protected virtual void HookOfRenderTextRun(XWPFRun run)
-        {
-        }
-
-        /// <summary>
         /// 获取模板文件
         /// </summary>
         /// <param name="contentRootPath"></param>
         /// <returns></returns>
-        private XWPFDocument GetTemplateWord(string templateUrl)
+        private static XWPFDocument GetTemplateWord<T>(string templateUrl, T wordData)
+            where T:IWordExport
         {
             XWPFDocument word;
 
-            Type type = this.GetType();
+            Type type = typeof(T);
            
             if (!File.Exists(templateUrl))
             {
@@ -134,26 +120,28 @@ namespace Ade.OfficeService.Word
         /// 渲染Word文件
         /// </summary>
         /// <param name="word"></param>
-        private void Render(XWPFDocument word)
+        private static void Render<T>(XWPFDocument word, T wordData)
+            where T:IWordExport
         {
             if (word == null)
             {
                 throw new ArgumentNullException("word");
             }
 
-            Dictionary<string, string> placeHolderAndValueDict = GetPlaceHolderAndValueDict();
+            Dictionary<string, string> placeHolderAndValueDict = GetPlaceHolderAndValueDict<T>(wordData);
 
-            List<AddPictureOptions> listAddPictureOptions = GetAddPictureOptionsList();
+            List<AddPictureOptions> listAddPictureOptions = GetAddPictureOptionsList(wordData);
 
-            List<string> listAllPlaceHolder = GetAllPlaceHolder();
+            List<string> listAllPlaceHolder = GetAllPlaceHolder<T>();
 
-            WordHelper.ReplacePlaceHolderInWord(word, placeHolderAndValueDict, listAddPictureOptions, listAllPlaceHolder, HookOfRenderTextRun);
+            WordHelper.ReplacePlaceHolderInWord(word, placeHolderAndValueDict, listAddPictureOptions, listAllPlaceHolder);
         }
 
-        private List<string> GetAllPlaceHolder()
+        private static List<string> GetAllPlaceHolder<T>()
+            where T:IWordExport
         {
             List<string> listAllPlaceHolder = new List<string>();
-            Type type = this.GetType();
+            Type type = typeof(T);
             PropertyInfo[] props = type.GetProperties();
 
             foreach (PropertyInfo prop in props)
@@ -176,17 +164,18 @@ namespace Ade.OfficeService.Word
         /// 获取展位符和值字典
         /// </summary>
         /// <returns></returns>
-        private Dictionary<string, string> GetPlaceHolderAndValueDict()
+        private static Dictionary<string, string> GetPlaceHolderAndValueDict<T>(T wordData)
+            where T:IWordExport
         {
             Dictionary<string, string> placeHolderAndValueDict = new Dictionary<string, string>();
-            Type type = this.GetType();
+            Type type = typeof(T);
             PropertyInfo[] props = type.GetProperties();
 
             foreach (PropertyInfo prop in props)
             {
                 if (prop.IsDefined(typeof(PlaceHolderAttribute)))
                 {
-                    placeHolderAndValueDict.Add(prop.GetCustomAttribute<PlaceHolderAttribute>().PlaceHolder.ToString(), prop.GetValue(this)?.ToString());
+                    placeHolderAndValueDict.Add(prop.GetCustomAttribute<PlaceHolderAttribute>().PlaceHolder.ToString(), prop.GetValue(wordData)?.ToString());
                 }
             }
 

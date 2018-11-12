@@ -29,7 +29,7 @@ namespace Ade.OfficeService.UnitTest
                 CarLicense = new List<string> { pic3 }
             };
 
-            XWPFDocument doc = car.GetRenderedWord(templateurl);
+            XWPFDocument doc = WordExportService.GetRenderedWord(templateurl, car);
 
 
             File.WriteAllBytes(@"c:\test\test.docx", doc.ToBytes());
