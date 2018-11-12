@@ -18,7 +18,7 @@ namespace Ade.OfficeService.Excel
         private static Hashtable Table = Hashtable.Synchronized(new Hashtable(1024));
 
         /// <summary>
-        /// 将ExcelDataRow快速转换为制定类型
+        /// 将ExcelDataRow快速转换为指定类型
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="dataRow"></param>
@@ -84,7 +84,7 @@ namespace Ade.OfficeService.Excel
 
         public static object ChangeType(string stringValue, Type type)
         {
-            object obj = null;
+            object obj = type.IsValueType;
 
             Type nullableType = Nullable.GetUnderlyingType(type);
             if (nullableType != null)
