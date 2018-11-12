@@ -44,7 +44,7 @@ namespace Ade.OfficeService.ConsoleTest
             foreach (var item in rows.Where(e => e.IsValid))
             {
                 //反射转换 - 5000条 6秒
-                item.ConvertDirect<ImportCar>();
+                item.ConvertByRefelection<ImportCar>();
             }
             sw.Stop();
             Console.WriteLine($"直接反射转换耗时：{sw.ElapsedMilliseconds}");

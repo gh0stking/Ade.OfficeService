@@ -213,7 +213,13 @@ namespace Ade.OfficeService.Excel
             return (T)o;
         }
 
-        public static T ConvertDirect<T>(this ExcelDataRow row)
+        /// <summary>
+        /// 利用反射将ExcelDataRow转换为制定类型，性能较差
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="row"></param>
+        /// <returns></returns>
+        public static T ConvertByRefelection<T>(this ExcelDataRow row)
         {
             Type t = typeof(T);
             object o = Activator.CreateInstance(t);
@@ -230,6 +236,17 @@ namespace Ade.OfficeService.Excel
             });
 
             return (T)o;
+        }
+
+        /// <summary>
+        /// 利用表达式树，将ExcelDataRow快速转换为制定类型
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="row"></param>
+        /// <returns></returns>
+        public static T FastConvert<T>(this ExcelDataRow row)
+        {
+            return ExpressionMapper.FastConvert<T>(row);
         }
 
         private static object GetValue(ExcelDataRow row,Type propType ,string colName)
