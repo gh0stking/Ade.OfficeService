@@ -8,9 +8,9 @@ namespace Ade.OfficeService.ConsoleTest
     public class ImportCar : IExcelImport
     {
         [ExcelImport("车牌号")]
-        [Regex(RegexEnum.非空,ErrorMsg ="必填")]
+        [Regex(RegexConstant.NOT_EMPTY_REGEX,ErrorMsg ="必填")]
         //[DatabaseExist("cartable","carcode")]
-        [Regex(RegexEnum.车牌号)]
+        [Regex(RegexConstant.CAR_CODE_REGEX)]
         //[Duplication]
         public string CarCode { get; set; }
 
@@ -19,7 +19,7 @@ namespace Ade.OfficeService.ConsoleTest
         public string Mobile { get; set; }
 
         [ExcelImport("身份证号")]
-        [Regex(RegexEnum.身份证号)]
+        [Regex(RegexConstant.IDENTITY_NUMBER_REGEX)]
         public string IdentityNumber { get; set; }
 
         [ExcelImport("姓名")]
@@ -27,7 +27,7 @@ namespace Ade.OfficeService.ConsoleTest
         public string Name { get; set; }
 
         [ExcelImport("性别")]
-        [Regex(RegexEnum.性别)]
+        [Regex(RegexConstant.GENDER_REGEX)]
         public GenderEnum Gender { get; set; }
 
         [ExcelImport("注册日期")]

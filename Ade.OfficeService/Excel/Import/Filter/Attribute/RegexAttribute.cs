@@ -14,10 +14,5 @@ namespace Ade.OfficeService.Excel
             this.Regex = regex;
             this.ErrorMsg = "非法";
         }
-
-        public RegexAttribute(RegexEnum regexEnum)
-        {
-            this.Regex = RegexFactory.CreateRegex(regexEnum);
-        }
     }
 }
