@@ -25,12 +25,12 @@ namespace Ade.OfficeService.Excel
             Init(fileUrl);
 
             List<ExcelDataRow> rows = ExcelConverter.Convert<T>(Sheet, HeaderRow, 1);
-            AndFilter andFilter = new AndFilter() { filters = FiltersFactory.CreateFilters<T>(HeaderRow) };
+            AndFilter andFilter = new AndFilter() { filters = FiltersFlyWeight.CreateFilters<T>(HeaderRow) };
 
             FilterContext context = new FilterContext()
             {
                 DelegateNotExistInDatabase = delegateNotExistInDatabase,
-                TypeFilterInfo = TypeFilterInfoFactory.CreateInstance(typeof(T), HeaderRow)
+                TypeFilterInfo = TypeFilterInfoFlyweight.CreateInstance(typeof(T), HeaderRow)
             };
 
             rows = andFilter.Filter(rows, context);

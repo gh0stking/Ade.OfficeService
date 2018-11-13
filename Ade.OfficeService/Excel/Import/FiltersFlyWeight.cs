@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Ade.OfficeService.Excel
 {
-    public static class FiltersFactory
+    public static class FiltersFlyWeight
     {
         private static Hashtable Table = Hashtable.Synchronized(new Hashtable(1024));
         public static List<IFilter> CreateFilters<TTemplate>(ExcelHeaderRow headerRow)
@@ -20,7 +20,7 @@ namespace Ade.OfficeService.Excel
 
             List<IFilter> filters = new List<IFilter>();
             List<BaseFilterAttribute> attrs = new List<BaseFilterAttribute>();
-            TypeFilterInfo typeFilterInfo = TypeFilterInfoFactory.CreateInstance(typeof(TTemplate), headerRow);
+            TypeFilterInfo typeFilterInfo = TypeFilterInfoFlyweight.CreateInstance(typeof(TTemplate), headerRow);
 
             typeFilterInfo.PropertyFilterInfos.ForEach(a => a.FilterAttrs.ForEach(f => attrs.Add(f)));
 

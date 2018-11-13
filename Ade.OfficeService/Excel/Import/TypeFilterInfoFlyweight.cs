@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Ade.OfficeService.Excel
 {
-    public static class TypeFilterInfoFactory
+    public static class TypeFilterInfoFlyweight
     {
         private static readonly Hashtable Table = Hashtable.Synchronized(new Hashtable(1024));
         public static TypeFilterInfo CreateInstance(Type importType, ExcelHeaderRow excelHeaderRow)

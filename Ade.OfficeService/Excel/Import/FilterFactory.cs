@@ -9,14 +9,8 @@ namespace Ade.OfficeService.Excel
 {
     internal static class FilterFactory
     {
-        private static readonly Hashtable Table = Hashtable.Synchronized(new Hashtable(1024));
         public static IFilter CreateInstance(Type attrType)
         {
-            if (Table[attrType] != null)
-            {
-                return (IFilter)Table[attrType];
-            }
-
             IFilter filter = null;
 
             Type filterType = Assembly.GetAssembly(attrType).GetTypes().ToList()?.
@@ -27,7 +21,6 @@ namespace Ade.OfficeService.Excel
             if (filterType != null)
             {
                 filter = (IFilter)Activator.CreateInstance(filterType);
-                Table[attrType] = filter;
             }
 
             return filter;
