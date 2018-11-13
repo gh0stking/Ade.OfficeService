@@ -1,4 +1,5 @@
 ﻿using Ade.OfficeService.Excel;
+using NPOI.SS.UserModel;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,16 +12,25 @@ namespace Ade.OfficeService.ConsoleTest
     {
         static void Main(string[] args)
         {
-            int time = 1;
-            while (true)
-            {
-                Test(time);
-                Console.ReadKey();
-                time++;
-            }
+            ExportTemplate();
+
+            //int time = 1;
+
+            //while (true)
+            //{
+            //    Import(time);
+            //    Console.ReadKey();
+            //    time++;
+            //}
         }
 
-        private static void Test(int time)
+        private static void ExportTemplate()
+        {
+            IWorkbook wk = ExcelImportService.ExportTemplate<ImportCar>();
+            File.WriteAllBytes(@"c:\test\template.xls", wk.ToBytes());
+        }
+
+        private static void Import(int time)
         {
 
             string curDir = Environment.CurrentDirectory;

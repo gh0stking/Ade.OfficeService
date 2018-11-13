@@ -7,22 +7,22 @@ namespace Ade.OfficeService.ConsoleTest
 {
     [WrapText]
     [Header(Color =ColorEnum.RED,FontName ="微软雅黑",FontSize =12,IsBold =true)]
-    public class ExportCar : IExcelExport
+    public class ExportCar 
     {
         [MergeCols]
-        [ExcelExport("车牌号")]
+        [ColName("车牌号")]
         public string CarCode { get; set; }
 
-        [ExcelExport("姓名")]
+        [ColName("姓名")]
         public string Name { get; set; }
 
-        [ExcelExport("性别")]
+        [ColName("性别")]
         public GenderEnum Gender { get; set; }
 
-        [ExcelExport("注册日期")]
+        [ColName("注册日期")]
         public DateTime RegisterDate { get; set; }
 
-        [ExcelExport("年龄")]
+        [ColName("年龄")]
         public int Age { get; set; }
     }
 }

@@ -29,7 +29,7 @@ namespace Ade.OfficeService.Excel
             typeDecoratorInfo.TypeDecoratorAttrs.AddRange(exportType.GetCustomAttributes<BaseDecorateAttribute>());
 
             //列装饰特性
-            List<PropertyInfo> props = exportType.GetProperties().ToList().Where(p => p.IsDefined(typeof(ExcelExportAttribute))).ToList();
+            List<PropertyInfo> props = exportType.GetProperties().ToList().Where(p => p.IsDefined(typeof(ColNameAttribute))).ToList();
 
             for (int i = 0; i < props.Count(); i++)
             {

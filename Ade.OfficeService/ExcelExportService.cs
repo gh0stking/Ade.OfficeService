@@ -10,7 +10,7 @@ namespace Ade.OfficeService.Excel
     public static class ExcelExportService
     {
         public static IWorkbook Export<T>(List<T> exportDtos)
-            where T:IExcelExport
+            where T:class,new()
         {
             Init();
 
@@ -30,7 +30,7 @@ namespace Ade.OfficeService.Excel
             Sheet = Workbook.CreateSheet();
         }
         private static void Decorate<T>()
-            where T:IExcelExport
+              where T : class, new()
         {
             DecoratorContext context = new DecoratorContext()
             {
@@ -47,7 +47,7 @@ namespace Ade.OfficeService.Excel
         /// </summary>
         /// <returns></returns>
         private static List<IDecorator> GetDecorators<T>()
-            where T:IExcelExport
+                where T : class, new()
 
         {
             List<IDecorator> decorators = new List<IDecorator>();
@@ -73,7 +73,7 @@ namespace Ade.OfficeService.Excel
         /// 设置表头
         /// </summary>
         private static void ExcelSetHeader<T>()
-            where T:IExcelExport
+            where T:class,new()
         {
             IRow row = Sheet.CreateRow(0);
             int colIndex = 0;
@@ -89,7 +89,7 @@ namespace Ade.OfficeService.Excel
         /// </summary>
         /// <param name="lst"></param>
         private static void ExcelSetDataRow<T>(List<T> lst)
-            where T:IExcelExport
+                where T : class, new()
         {
             if (lst.Count <= 0)
             {
@@ -98,7 +98,7 @@ namespace Ade.OfficeService.Excel
 
             IRow row;
             int colIndex;
-            IExcelExport dto;
+            T dto;
 
             var dict = ExportMappingDictFactory.CreateInstance(typeof(T));
 

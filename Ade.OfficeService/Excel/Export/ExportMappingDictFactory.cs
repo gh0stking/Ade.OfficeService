@@ -26,9 +26,9 @@ namespace Ade.OfficeService.Excel
 
             Dictionary<string, string> dict = new Dictionary<string, string>();
             exportType.GetProperties().ToList().ForEach(p=> {
-                if (p.IsDefined(typeof(ExcelExportAttribute)))
+                if (p.IsDefined(typeof(ColNameAttribute)))
                 {
-                    dict.Add(p.Name, p.GetCustomAttribute<ExcelExportAttribute>().ColName);
+                    dict.Add(p.Name, p.GetCustomAttribute<ColNameAttribute>().ColName);
                 }
             });
 

@@ -30,10 +30,10 @@ namespace Ade.OfficeService.Excel
 
             TypeFilterInfo typeFilterInfo = new TypeFilterInfo() { PropertyFilterInfos = new List<PropertyFilterInfo>() { } };
 
-            IEnumerable<PropertyInfo> props = importType.GetProperties().ToList().Where(p => p.IsDefined(typeof(ExcelImportAttribute)));
+            IEnumerable<PropertyInfo> props = importType.GetProperties().ToList().Where(p => p.IsDefined(typeof(ColNameAttribute)));
             props.ToList().ForEach(p =>
             {
-                string colName = p.GetCustomAttribute<ExcelImportAttribute>().ColName;
+                string colName = p.GetCustomAttribute<ColNameAttribute>().ColName;
                 ExcelCol col = excelHeaderRow.Cells.SingleOrDefault(c => c.ColName == colName);
                 if (col != null)
                 {

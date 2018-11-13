@@ -61,7 +61,7 @@ namespace Ade.OfficeService.Excel
         /// <param name="export"></param>
         /// <param name="propertyName"></param>
         /// <returns></returns>
-        public static string GetStringValue(this IExcelExport export, string propertyName)
+        public static string GetStringValue<T>(this T export, string propertyName)
         {
             string strVal = string.Empty;
             var prop = export.GetType().GetProperties().Where(p => p.Name.Equals(propertyName)).SingleOrDefault();
@@ -204,9 +204,9 @@ namespace Ade.OfficeService.Excel
             object o = Activator.CreateInstance(t);
             t.GetProperties().ToList().ForEach(p =>
             {
-                if (p.IsDefined(typeof(ExcelImportAttribute)))
+                if (p.IsDefined(typeof(ColNameAttribute)))
                 {
-                    p.SetValue(o, func(row,p.PropertyType,p.GetCustomAttribute<ExcelImportAttribute>().ColName));
+                    p.SetValue(o, func(row,p.PropertyType,p.GetCustomAttribute<ColNameAttribute>().ColName));
                 }
             });
 
@@ -224,9 +224,9 @@ namespace Ade.OfficeService.Excel
             Type t = typeof(T);
             object o = Activator.CreateInstance(t);
             t.GetProperties().ToList().ForEach(p => {
-                if (p.IsDefined(typeof(ExcelImportAttribute)))
+                if (p.IsDefined(typeof(ColNameAttribute)))
                 {
-                    ExcelDataCol col = row.DataCols.SingleOrDefault(c => c.ColName == p.GetCustomAttribute<ExcelImportAttribute>().ColName);
+                    ExcelDataCol col = row.DataCols.SingleOrDefault(c => c.ColName == p.GetCustomAttribute<ColNameAttribute>().ColName);
 
                     if (col != null)
                     {

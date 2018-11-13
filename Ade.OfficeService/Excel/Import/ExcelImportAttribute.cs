@@ -3,9 +3,9 @@
 namespace Ade.OfficeService
 {
     [AttributeUsage(AttributeTargets.Property)]
-    public class ExcelImportAttribute : Attribute
+    public class ColNameAttribute : Attribute
     {
-        public ExcelImportAttribute(string colName)
+        public ColNameAttribute(string colName)
         {
             this.ColName = colName;
         }

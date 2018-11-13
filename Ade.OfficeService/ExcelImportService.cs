@@ -16,6 +16,40 @@ namespace Ade.OfficeService.Excel
         private static ExcelHeaderRow HeaderRow { get; set; }
 
         /// <summary>
+        /// 导入
+        /// </summary>
+        /// <returns></returns>
+        public static List<ExcelDataRow> Import<T>(string fileUrl, Func<DatabaseFilterContext, bool> delegateNotExistInDatabase = null)
+            where T : class, new()
+        {
+            Init(fileUrl);
+
+            List<ExcelDataRow> rows = ExcelConverter.Convert<T>(Sheet, HeaderRow, 1);
+            AndFilter andFilter = new AndFilter() { filters = FiltersFactory.CreateFilters<T>(HeaderRow) };
+
+            FilterContext context = new FilterContext()
+            {
+                DelegateNotExistInDatabase = delegateNotExistInDatabase,
+                TypeFilterInfo = TypeFilterInfoFactory.CreateInstance(typeof(T), HeaderRow)
+            };
+
+            rows = andFilter.Filter(rows, context);
+
+            return rows;
+        }
+
+        /// <summary>
+        /// 导出默认模板
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static IWorkbook ExportTemplate<T>()
+            where T : class, new()
+        {
+            return ExcelExportService.Export(new List<T>() { });
+        }
+
+        /// <summary>
         /// 初始化
         /// </summary>
         /// <param name="fileUrl"></param>
@@ -70,29 +104,6 @@ namespace Ade.OfficeService.Excel
                         ColName = cell.GetStringValue()
                     });
             }
-        }
-
-        /// <summary>
-        /// 校验
-        /// </summary>
-        /// <returns></returns>
-        public static List<ExcelDataRow> Import<T>(string fileUrl, Func<DatabaseFilterContext, bool> delegateNotExistInDatabase = null)
-            where T:IExcelImport
-        {
-            Init(fileUrl);
-
-            List<ExcelDataRow> rows = ExcelConverter.Convert<T>(Sheet, HeaderRow, 1);
-            AndFilter andFilter = new AndFilter() { filters = FiltersFactory.CreateFilters<T>(HeaderRow) };
-
-            FilterContext context = new FilterContext()
-            {
-                DelegateNotExistInDatabase = delegateNotExistInDatabase,
-                TypeFilterInfo = TypeFilterInfoFactory.CreateInstance(typeof(T), HeaderRow)
-            };
-
-            rows = andFilter.Filter(rows, context);
-
-            return rows;
         }
     }
 }

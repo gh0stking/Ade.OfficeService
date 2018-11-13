@@ -66,8 +66,8 @@ namespace Ade.OfficeService.Excel
 
                 if (Table[key] == null)
                 {
-                    propertyName = type.GetProperties().ToList().FirstOrDefault(p => p.IsDefined(typeof(ExcelImportAttribute), false)
-                && p.GetCustomAttribute<ExcelImportAttribute>()?.ColName == colName
+                    propertyName = type.GetProperties().ToList().FirstOrDefault(p => p.IsDefined(typeof(ColNameAttribute), false)
+                && p.GetCustomAttribute<ColNameAttribute>()?.ColName == colName
                 )?.Name;
                     Table[key] = propertyName;
                 }
