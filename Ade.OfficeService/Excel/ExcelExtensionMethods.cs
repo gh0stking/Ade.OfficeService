@@ -239,7 +239,7 @@ namespace Ade.OfficeService.Excel
         }
 
         /// <summary>
-        /// 利用表达式树，将ExcelDataRow快速转换为制定类型
+        /// 利用表达式树，将ExcelDataRow快速转换为指定类型
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="row"></param>
@@ -247,6 +247,21 @@ namespace Ade.OfficeService.Excel
         public static T FastConvert<T>(this ExcelDataRow row)
         {
             return ExpressionMapper.FastConvert<T>(row);
+        }
+
+        /// <summary>
+        /// 利用表达式树，将ExcelDataRow集合快速转换为指定类型集合
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="rows"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> FastConvert<T>(this IEnumerable<ExcelDataRow> rows)
+        {
+            List<T> list = new List<T>();
+
+            rows.ToList().ForEach(r => list.Add(FastConvert<T>(r)));
+
+            return list;
         }
 
         private static object GetValue(ExcelDataRow row,Type propType ,string colName)

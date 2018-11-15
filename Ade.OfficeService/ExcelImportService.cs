@@ -18,8 +18,11 @@ namespace Ade.OfficeService.Excel
         /// <summary>
         /// 导入
         /// </summary>
+        /// <typeparam name="T">模板类</typeparam>
+        /// <param name="fileUrl">Excel文件绝对地址</param>
+        /// <param name="delegateNotExistInDatabase">数据库校验委托，标记了数据库重复校验特性则必填</param>
         /// <returns></returns>
-        public static List<ExcelDataRow> Import<T>(string fileUrl, Func<DatabaseFilterContext, bool> delegateNotExistInDatabase = null)
+        public static List<ExcelDataRow> Validate<T>(string fileUrl, Func<DatabaseFilterContext, bool> delegateNotExistInDatabase = null)
             where T : class, new()
         {
             Init(fileUrl);
@@ -41,12 +44,17 @@ namespace Ade.OfficeService.Excel
         /// <summary>
         /// 导出默认模板
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">模板类</typeparam>
         /// <returns></returns>
         public static IWorkbook ExportTemplate<T>()
             where T : class, new()
         {
             return ExcelExportService.Export(new List<T>() { });
+        }
+
+        public static IEnumerable<T> FastConvert<T>(List<ExcelDataRow> dataRows)
+        {
+            return dataRows.FastConvert<T>();
         }
 
         /// <summary>

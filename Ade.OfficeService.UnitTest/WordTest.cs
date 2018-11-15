@@ -31,7 +31,7 @@ namespace Ade.OfficeService.UnitTest
 
             XWPFDocument doc = WordExportService.ExportFromTemplate(templateurl, car);
 
-
+            ///为XWPFDocument提供了转换为byte数组的扩展方法
             File.WriteAllBytes(@"c:\test\test.docx", doc.ToBytes());
         }
        

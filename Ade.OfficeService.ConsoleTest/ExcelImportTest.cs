@@ -15,7 +15,7 @@ namespace Ade.OfficeService.ConsoleTest
 
             string fileUrl = Path.Combine(curDir, "files", "CarImport.xlsx");
 
-            var rows = ExcelImportService.Import<ImportCar>(fileUrl, DBExist);
+            var rows = ExcelImportService.Validate<ImportCar>(fileUrl, DBExist);
 
             List<ImportCar> list = new List<ImportCar>();
             foreach (var item in rows.Where(e => e.IsValid))

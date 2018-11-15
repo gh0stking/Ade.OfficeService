@@ -12,16 +12,16 @@ namespace Ade.OfficeService.ConsoleTest
     {
         static void Main(string[] args)
         {
-            ExportTemplate();
+            //ExportTemplate();
 
-            //int time = 1;
+            int time = 1;
 
-            //while (true)
-            //{
-            //    Import(time);
-            //    Console.ReadKey();
-            //    time++;
-            //}
+            while (true)
+            {
+                Import(time);
+                Console.ReadKey();
+                time++;
+            }
         }
 
         private static void ExportTemplate()
@@ -40,7 +40,7 @@ namespace Ade.OfficeService.ConsoleTest
             Stopwatch sw = new Stopwatch();
 
             sw.Start();
-            var rows = ExcelImportService.Import<ImportCar>(fileUrl, DBExist);
+            var rows = ExcelImportService.Validate<ImportCar>(fileUrl, DBExist);
 
             Console.WriteLine($"------------第{time}次导入，处理{rows.Where(e=>e.IsValid).Count()}条数据------------");
 

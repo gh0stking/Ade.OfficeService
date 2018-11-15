@@ -14,7 +14,7 @@ namespace Ade.OfficeService.Word
         /// <param name="contentRootPath"></param>
         /// <returns></returns>
         public static XWPFDocument ExportFromTemplate<T>(string templateUrl, T wordData)
-            where T:IWordExport
+             where T : class, new()
         {
             XWPFDocument word = GetTemplateWord(templateUrl, wordData);
 
@@ -43,7 +43,7 @@ namespace Ade.OfficeService.Word
         /// </summary>
         /// <returns></returns>
         private static List<AddPictureOptions> GetAddPictureOptionsList<T>(T wordData)
-            where T:IWordExport
+           where T : class, new()
         {
             List<AddPictureOptions> listAddPictureOptions = new List<AddPictureOptions>();
             Type type = typeof(T);
@@ -90,7 +90,7 @@ namespace Ade.OfficeService.Word
         /// <param name="contentRootPath"></param>
         /// <returns></returns>
         private static XWPFDocument GetTemplateWord<T>(string templateUrl, T wordData)
-            where T:IWordExport
+            where T : class, new()
         {
             XWPFDocument word;
 
@@ -121,7 +121,7 @@ namespace Ade.OfficeService.Word
         /// </summary>
         /// <param name="word"></param>
         private static void Render<T>(XWPFDocument word, T wordData)
-            where T:IWordExport
+            where T : class, new()
         {
             if (word == null)
             {
@@ -138,7 +138,7 @@ namespace Ade.OfficeService.Word
         }
 
         private static List<string> GetAllPlaceHolder<T>()
-            where T:IWordExport
+            where T : class, new()
         {
             List<string> listAllPlaceHolder = new List<string>();
             Type type = typeof(T);
@@ -165,7 +165,7 @@ namespace Ade.OfficeService.Word
         /// </summary>
         /// <returns></returns>
         private static Dictionary<string, string> GetPlaceHolderAndValueDict<T>(T wordData)
-            where T:IWordExport
+           where T : class, new()
         {
             Dictionary<string, string> placeHolderAndValueDict = new Dictionary<string, string>();
             Type type = typeof(T);

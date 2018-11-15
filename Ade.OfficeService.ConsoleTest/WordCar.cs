@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Ade.OfficeService.ConsoleTest
 {
-    public class WordCar : IWordExport
+    public class WordCar
     {
         [PlaceHolder(PlaceHolderEnum.A)]
         public string OwnerName { get; set; }

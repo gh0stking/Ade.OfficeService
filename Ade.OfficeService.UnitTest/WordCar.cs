@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Ade.OfficeService.UnitTest
 {
-    public class WordCar : IWordExport
+    public class WordCar
     {
         [PlaceHolder(PlaceHolderEnum.A)]
         public string OwnerName { get; set; }
@@ -13,6 +13,7 @@ namespace Ade.OfficeService.UnitTest
         [PlaceHolder(PlaceHolderEnum.B)]
         public string CarType { get; set; }
 
+        //图片占位的属性类型必须为List<string>,存放图片的绝对全地址
         [PicturePlaceHolder(PlaceHolderEnum.C,"车辆照片")]
         public List<string> CarPictures { get; set; }
 

@@ -19,7 +19,7 @@ namespace Ade.OfficeService.UnitTest
 
             //ImportCar carImportDTO = new ImportCar();
             //carImportDTO.SetDelegateDatabaseExist(DBExist);
-            var rows = ExcelImportService.Import<ImportCar>(fileUrl, DBExist);
+            var rows = ExcelImportService.Validate<ImportCar>(fileUrl, DBExist);
 
             Assert.True(rows.Count > 0);
            
